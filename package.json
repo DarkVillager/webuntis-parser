@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "date-and-time": "^2.4.2"
+    "date-and-time": "^2.4.2",
+    "http": "^0.0.1-security"
   }
 }

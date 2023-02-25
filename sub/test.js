@@ -43,6 +43,7 @@ async function does(info) {
 		};
 	}
 	console.log(elementsChecked);
+	return `${JSON.stringify(elementsChecked)}`;
 }
 
 async function get() {
@@ -73,6 +74,6 @@ async function get() {
 		.then((data) => {
 			return data.data.result.data;
 		});
-	does(await z);
+	return does(await z);
 }
-get();
+module.exports = get();
