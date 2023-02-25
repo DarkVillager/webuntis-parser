@@ -1,5 +1,5 @@
 const date = require('date-and-time'),
-	now = new Date(2023, 02, 27);
+	now = Date.now()
 const eNow = date.format(now, 'YYYY-MM-DD'); // normal date
 
 function server(elementsCheckeds) {
