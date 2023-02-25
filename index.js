@@ -5,13 +5,6 @@ const eNow = date.format(now, 'YYYY-MM-DD'); // normal date
 function server(elementsCheckeds) {
 	const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 	const http = require('http');
-	const rooster = {
-		20230327: { begin: 900, end: 1530 },
-		20230328: { begin: 1100, end: 1630 },
-		20230329: { begin: 1030, end: 1430 },
-		20230330: { begin: 900, end: 1300 },
-		20230331: { begin: 900, end: 1130 },
-	};
 	const host = 'localhost';
 	const port = 8000;
 
