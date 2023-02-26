@@ -1,6 +1,7 @@
-const date = require('date-and-time'),
-	now = new Date(2023, 02, 27);
-const eNow = date.format(now, 'YYYY-MM-DD'); // normal date
+const format = require('date-format'),
+	now = new Date(2023, 02, 29);
+const eNow = format.asString('yyyy-MM-dd', now); // normal date
+console.log(eNow);
 
 async function does(info) {
 	const infos = info.elementPeriods[16899];
@@ -39,7 +40,7 @@ async function does(info) {
 		const sortedLength = sorted.length;
 		elementsChecked[Number(Object.keys(check)[index])] = {
 			begin: Number(String(Array(sorted[0])[0]).split(',')[0]),
-			end: Number(String(Array(sorted[sortedLength - 1])[0]).split(',')[0]),
+			end: Number(String(Array(sorted[sortedLength - 1])[0]).split(',')[1]),
 		};
 	}
 	console.log(elementsChecked);
