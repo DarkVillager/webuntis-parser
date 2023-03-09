@@ -6,7 +6,7 @@ const format = require('date-format'),
 function server(elementsCheckeds) {
 	const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 	const http = require('http');
-	const host = 'localhost';
+	const host = '52.29.26.168';
 	const port = 8000;
 
 	const transform = JSON.stringify(elementsCheckeds);
