@@ -5,21 +5,15 @@ const format = require('date-format'),
 
 function server(elementsCheckeds) {
 	const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-	const http = require('http');
-	const host = '52.29.26.168';
-	const port = 8000;
-
+	const express = require('express');
+	const app = express();
+	app.listen(3000, () => console.log(`Server is listening on port 3000`));
 	const transform = JSON.stringify(elementsCheckeds);
 	console.log(transform);
-	const requestListener = async function (req, res) {
-		sleep(2000);
-		res.writeHead(200);
-		res.end(transform);
-	};
 
-	const server = http.createServer(requestListener);
-	server.listen(port, host, () => {
-		console.log(`Server is running on http://${host}:${port}`);
+	app.get('/', function (req, res) {
+		sleep(2000);
+		res.end(transform);
 	});
 }
 
