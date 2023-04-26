@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+
+		<table id="table"></h3>
+	</head>
+	<body>    <div id="div1"></div></body>
+</html>
+<script>
+    // document.body.onload = request;
+    let dataName = [];
+    document.body.onload = request;
+
+
+    async function request() {
+        const response = await fetch('/api');
+        console.log(response);
+        const data = await response.json();
+        dataName = data;
+        let name = document.querySelector('[id="name"]');
+        console.log(data);
+        const newDiv = document.createElement("table")
+        const currentDiv = document.getElementById("div1");
+        document.body.insertBefore(newDiv, currentDiv);
+       const newTr = newDiv.appendChild("tr")
+        Object.keys(dataName).forEach(x => {
+            const tE = document.createElement("td")
+            newTr.appendChild(tE)
+            tE.textContent = x
+        })
+    }
+</script>

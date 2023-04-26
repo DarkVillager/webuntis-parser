@@ -1,5 +1,6 @@
 const format = require('date-format'),
-	now = new Date(Date.now()),
+	fetch = require('node-fetch'),
+	now = new Date('2023-04-11'),
 	eNow = format.asString('yyyy-MM-dd', now); // normal date
 
 // Builds the HTML Table out of myList json data from Ivy restful service.
@@ -45,6 +46,11 @@ function server(elementsCheckeds) {
 	const path = require('path');
 	const app = express();
 	const router = express.Router();
+	router.get('/api', function (req, res) {
+		app.use(express.static(`main`));
+		res.json(elementsCheckeds);
+		//__dirname : It will resolve to your project folder.
+	});
 	router.get('/', function (req, res) {
 		res.sendFile(path.join(__dirname + '/index.html'));
 		//__dirname : It will resolve to your project folder.
