@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+        <style>
+            table {
+              font-family: arial, sans-serif;
+              border-collapse: collapse;
+              width: 100%;
+            }
+            
+            td, th {
+              border: 1px solid #dddddd;
+              text-align: left;
+              padding: 8px;
+            }
+            
+            tr:nth-child(even) {
+              background-color: #dddddd;
+            }
+            </style>
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,26 +28,68 @@
 	<body>    <div id="div1"></div></body>
 </html>
 <script>
-    // document.body.onload = request;
-    let dataName = [];
-    document.body.onload = request;
+let dataName = [];
+document.body.onload = request;
 
+async function request() {
+	const titles = ['Date', 'Start time', 'End time'];
+	const response = await fetch('/api');
+	console.log(response);
+	const data = await response.json();
+	dataName = data;
+	let name = document.querySelector('[id="name"]');
+	console.log(data);
+	const newDiv = document.createElement('table');
+	const x = document.createElement('tr');
 
-    async function request() {
-        const response = await fetch('/api');
-        console.log(response);
-        const data = await response.json();
-        dataName = data;
-        let name = document.querySelector('[id="name"]');
-        console.log(data);
-        const newDiv = document.createElement("table")
-        const currentDiv = document.getElementById("div1");
-        document.body.insertBefore(newDiv, currentDiv);
-       const newTr = newDiv.appendChild("tr")
-        Object.keys(dataName).forEach(x => {
-            const tE = document.createElement("td")
-            newTr.appendChild(tE)
-            tE.textContent = x
-        })
-    }
+	newDiv.className = 'table-1';
+	newDiv.appendChild(x);
+	const currentDiv = document.getElementById('div1');
+	document.body.insertBefore(newDiv, currentDiv);
+
+	const yz = newDiv.appendChild(document.createElement('tr'));
+	titles.forEach((t) => {
+		const title = document.createElement('th');
+		title.textContent = t;
+		yz.appendChild(title);
+	});
+	for (let index = 0; index !== Object.keys(dataName).length; index++) {
+		const elementKey = Object.keys(dataName)[index];
+		const elementValue = Object.values(dataName)[index];
+		const textEl0 = document.createElement('td');
+		const textEl1 = document.createElement('td');
+		const textEl2 = document.createElement('td');
+
+		function timestamp(string) {
+			const stringed = string.toString();
+			if (stringed.length === 4) {
+				return `${stringed.slice(0, 2)}:${stringed.slice(2, 4)}`;
+			} else console.error(stringed);
+		}
+
+		function date(string) {
+			const stringed = string.toString();
+			if (stringed.length === 8) {
+				return `${stringed.slice(6, 8)}-${stringed.slice(
+					4,
+					6
+				)}-${stringed.slice(0, 4)}`;
+			} else console.error(stringed);
+		}
+
+		textEl0.textContent = date(elementKey);
+		textEl1.textContent =
+			elementValue?.begin < 1000
+				? timestamp(`0${elementValue?.begin}`)
+				: timestamp(elementValue?.begin);
+		textEl2.textContent =
+			elementValue?.end < 1000
+				? timestamp(`0${elementValue?.end}`)
+				: timestamp(elementValue?.end);
+		const y = newDiv.appendChild(document.createElement('tr'));
+		y.appendChild(textEl0);
+		y.appendChild(textEl1);
+		y.appendChild(textEl2);
+	}
+}
 </script>
