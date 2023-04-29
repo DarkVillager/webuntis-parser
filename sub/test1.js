@@ -1,6 +1,6 @@
 const format = require('date-format'),
 	fetch = require('node-fetch'),
-	now = new Date('2023-04-11'),
+	now = new Date('2023-04-17'),
 	eNow = format.asString('yyyy-MM-dd', now); // normal date
 
 // Builds the HTML Table out of myList json data from Ivy restful service.

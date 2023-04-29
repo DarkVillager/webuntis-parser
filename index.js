@@ -1,19 +1,82 @@
 const format = require('date-format'),
-	now = new Date(Date.now()),
-	eNow = format.asString('yyyy-MM-dd', now); // normal date
+	fetch = require('node-fetch'),
+	now = new Date('2023-04-17'),
+	eNow = format.asString('yyyy-MM-dd', now),
+	now2 = new Date(Date.now()),
+	eNow2 = format.asString('yyyy-MM-dd', now); // normal date
 
+// Builds the HTML Table out of myList json data from Ivy restful service.
+function buildHtmlTable(arr) {
+	var table = _table_.cloneNode(false),
+		columns = addAllColumnHeaders(arr, table);
+	for (var i = 0, maxi = arr.length; i < maxi; ++i) {
+		var tr = _tr_.cloneNode(false);
+		for (var j = 0, maxj = columns.length; j < maxj; ++j) {
+			var td = _td_.cloneNode(false);
+			var cellValue = arr[i][columns[j]];
+			td.appendChild(document.createTextNode(arr[i][columns[j]] || ''));
+			tr.appendChild(td);
+		}
+		table.appendChild(tr);
+	}
+	return table;
+}
+
+// Adds a header row to the table and returns the set of columns.
+// Need to do union of keys from all records as some records may not contain
+// all records
+function addAllColumnHeaders(arr, table) {
+	var columnSet = [],
+		tr = _tr_.cloneNode(false);
+	for (var i = 0, l = arr.length; i < l; i++) {
+		for (var key in arr[i]) {
+			if (arr[i].hasOwnProperty(key) && columnSet.indexOf(key) === -1) {
+				columnSet.push(key);
+				var th = _th_.cloneNode(false);
+				th.appendChild(document.createTextNode(key));
+				tr.appendChild(th);
+			}
+		}
+	}
+	table.appendChild(tr);
+	return columnSet;
+}
+
+let willem;
 function server(elementsCheckeds) {
 	const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 	const express = require('express');
+	const path = require('path');
 	const app = express();
+	const router = express.Router();
+	router.get('/api', function (req, res) {
+		app.use(express.static(`main`));
+		res.json(elementsCheckeds);
+		//__dirname : It will resolve to your project folder.
+	});
+	router.get('/', function (req, res) {
+		willem = false;
+		res.sendFile(path.join(__dirname + '/index.html'));
+		//__dirname : It will resolve to your project folder.
+	});
+	router.get('/ext', function (req, res) {
+		willem = true;
+		res.sendFile(path.join(__dirname + '/index.html'));
+		//__dirname : It will resolve to your project folder.
+	});
+
 	app.listen(3000, () => console.log(`Server is listening on port 3000`));
 	const transform = JSON.stringify(elementsCheckeds);
 	console.log(transform);
-
-	app.get('/', function (req, res) {
-		sleep(2000);
-		res.end(transform);
-	});
+	app.use('/', router);
+	// app.get('/', function (req, res) {
+	// 	sleep(2000);
+	// 	const options = {
+	// 		root: __dirname,
+	// 	};
+	// 	res.sendFile('index.html', options);
+	// 	res.end(transform);
+	// });
 }
 
 async function does(info) {
@@ -62,7 +125,9 @@ async function does(info) {
 
 async function get() {
 	const z = fetch(
-		`https://tipo.webuntis.com/WebUntis/api/public/timetable/weekly/data?elementType=1&elementId=16899&date=${eNow}&formatId=7`,
+		`https://tipo.webuntis.com/WebUntis/api/public/timetable/weekly/data?elementType=1&elementId=16899&date=${
+			willem ? eNow2 : eNow
+		}&formatId=7`,
 		{
 			headers: {
 				accept: 'application/json',
