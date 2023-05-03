@@ -2,10 +2,14 @@
 <html lang="en">
 	<head>
         <style>
+			#div1 {
+display: flex;
+justify-content: center;
+			}
             table {
               font-family: arial, sans-serif;
               border-collapse: collapse;
-              width: 100%;
+			  align-self: center;
             }
             
             td, th {
@@ -22,8 +26,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Document</title>
-
-		<table id="table"></h3>
+</h3>
 	</head>
 	<body>    <div id="div1"></div></body>
 </html>
@@ -32,7 +35,7 @@ let dataName = [];
 document.body.onload = request;
 
 async function request() {
-	const titles = ['Date', 'Start time', 'End time'];
+	const titles = ['Dag', 'Datum', 'Start Tijd', 'Eind Tijd'];
 	const response = await fetch('/api');
 	console.log(response);
 	const data = await response.json();
@@ -45,7 +48,7 @@ async function request() {
 	newDiv.className = 'table-1';
 	newDiv.appendChild(x);
 	const currentDiv = document.getElementById('div1');
-	document.body.insertBefore(newDiv, currentDiv);
+	currentDiv.appendChild(newDiv);
 
 	const yz = newDiv.appendChild(document.createElement('tr'));
 	titles.forEach((t) => {
@@ -59,6 +62,7 @@ async function request() {
 		const textEl0 = document.createElement('td');
 		const textEl1 = document.createElement('td');
 		const textEl2 = document.createElement('td');
+		const textEl3 = document.createElement('td');
 
 		function timestamp(string) {
 			const stringed = string.toString();
@@ -87,12 +91,13 @@ async function request() {
 			} else console.error(stringed);
 		}
 		const days = ["Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"]
-		textEl0.textContent = `${days[new Date(dateOpposite(elementKey)).getDay()]} - ${date(elementKey)}`;
-		textEl1.textContent =
+		textEl0.textContent = days[new Date(dateOpposite(elementKey)).getDay()]
+		textEl1.textContent = date(elementKey);
+		textEl2.textContent =
 			elementValue?.begin < 1000
 				? timestamp(`0${elementValue?.begin}`)
 				: timestamp(elementValue?.begin);
-		textEl2.textContent =
+		textEl3.textContent =
 			elementValue?.end < 1000
 				? timestamp(`0${elementValue?.end}`)
 				: timestamp(elementValue?.end);
@@ -100,6 +105,7 @@ async function request() {
 		y.appendChild(textEl0);
 		y.appendChild(textEl1);
 		y.appendChild(textEl2);
+		y.appendChild(textEl3);
 	}
 }
 </script>
