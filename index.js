@@ -1,6 +1,7 @@
 const format = require('date-format'),
 	fetch = require('node-fetch'),
-	now = new Date('2023-04-17'),
+	elementId = '13864',
+	now = new Date('2023-05-08'),
 	eNow = format.asString('yyyy-MM-dd', now),
 	now2 = new Date(Date.now()),
 	eNow2 = format.asString('yyyy-MM-dd', now); // normal date
@@ -80,7 +81,7 @@ function server(elementsCheckeds) {
 }
 
 async function does(info) {
-	const infos = info.elementPeriods[16899];
+	const infos = info.elementPeriods[elementId];
 	const check = {};
 	const elementsChecked = {};
 	let g = 0;
@@ -125,7 +126,7 @@ async function does(info) {
 
 async function get() {
 	const z = fetch(
-		`https://tipo.webuntis.com/WebUntis/api/public/timetable/weekly/data?elementType=1&elementId=16899&date=${
+		`https://tipo.webuntis.com/WebUntis/api/public/timetable/weekly/data?elementType=1&elementId=${elementId}&date=${
 			willem ? eNow2 : eNow
 		}&formatId=7`,
 		{
