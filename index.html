@@ -77,7 +77,17 @@ async function request() {
 			} else console.error(stringed);
 		}
 
-		textEl0.textContent = date(elementKey);
+		function dateOpposite(string) {
+			const stringed = string.toString();
+			if (stringed.length === 8) {
+				return `${stringed.slice(4, 6)}-${stringed.slice(
+					6,
+					8
+				)}-${stringed.slice(0, 4)}`;
+			} else console.error(stringed);
+		}
+		const days = ["Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"]
+		textEl0.textContent = `${days[new Date(dateOpposite(elementKey)).getDay()]} - ${date(elementKey)}`;
 		textEl1.textContent =
 			elementValue?.begin < 1000
 				? timestamp(`0${elementValue?.begin}`)
